@@ -1,6 +1,6 @@
 // 小程序开发api接口工具包，https://github.com/gooking/wxapi
 const CONFIG = require('config.js')
-const API_BASE_URL = 'https://www.apiopen.top'
+const API_BASE_URL = 'https://api.apiopen.top'
 
 const request = (url, needSubDomain, method, data) => {
   let _url = API_BASE_URL + (needSubDomain ? '/' + CONFIG.subDomain : '') + url
@@ -27,13 +27,12 @@ const request = (url, needSubDomain, method, data) => {
 
 module.exports = {
   request,
-  getWeatherApi: (city) => {
-    return request('/weatherApi', false, 'get', {city})
+  //诗词
+  recommendPoetryApi:() => {
+    return request('/recommendPoetry', true, 'get')
   },
-  getImgApi:(data) =>{
-    return request('/satinApi', false, 'get', data)
-  },
-  newsApi:() =>{
-    return request('/journalismApi', false, 'get')
+  //唐诗
+  getTangPoetryApi:(data) => {
+    return request("/getTangPoetry",false,'get')
   }
 }

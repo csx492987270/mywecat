@@ -9,10 +9,22 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
+    activeCategoryId: 0,
+    curPage: 1,
+    categories:[
+      { id: 0, name:"全部"  },
+      { id: 1, name: "唐诗" },
+      { id: 2, name: "宋词" },
+      { id: 3, name: "元曲" }
+      ],
+    verse:"",
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    imgUrls: [],
-    indicatorDots: false,
-    autoplay: false,
+    imgUrls: [
+      {url:'./../../images/shi.jpeg'},
+      {url: './../../images/he.jpg' },
+    ],
+    indicatorDots: true,
+    autoplay: true,
     interval: 5000,
     duration: 1000
   },
@@ -52,24 +64,30 @@ Page({
   },
   onShow: function () {
     var that = this
-    //天气
-    WXAPI.getWeatherApi('深圳').then(function (res) {
-      if (res.code == 200) {
-        console.log(res.data)
-      }
-    });
-    //图片
-    WXAPI.getImgApi({ "type": 4, "page": 1 }).then(function (res) {
-      if (res.code == 200) {
-        that.setData({
-          imgUrls:res.data
-        })
-      }
-    });
-    //新闻
-    WXAPI.newsApi().then(function(res){
-        console.log(res)
+    WXAPI.recommendPoetryApi().then(function (res) {
+      console.log(res)
     })
+  },
+  tabClick:function(e){
+    this.setData({
+      activeCategoryId: e.currentTarget.id,
+      curPage: 1
+    });
+    switch (e.currentTarget.id){
+      case "1":
+        WXAPI.getTangPoetryApi({"page":1,"count":20}).then(function(res){
+          console.log(res)
+        })
+      break;
+      case "2":
+      break;
+      case "0":
+        WXAPI.recommendPoetryApi().then(function(res){
+        console.log(res)
+       })
+      break;
+    }
+    
   },
   getUserInfo: function (e) {
     console.log(e)
