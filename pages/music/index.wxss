@@ -1,0 +1,10 @@
+/* pages/music/index.wxss */
+
+.button-style {
+  background-color: #eee;
+  border-radius: 8rpx;
+  margin: 20rpx;
+}
+.btn {
+  display: line-block;
+}

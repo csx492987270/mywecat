@@ -15,7 +15,9 @@
 .userinfo-nickname {
   color: #aaa;
 }
-
+.btn {
+  display: inline-block;
+}
 .usermotto {
   margin-top: 200px;
 }
@@ -31,11 +33,36 @@ image {
 }
 .type-box {
   display: inline-block;
-  margin: 0 20px;
+  width: 25%;
+  text-align: center;
+  
+}
+.input {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display:inline-block;
 }
 .type-navbar-item{
   border-bottom:2px solid #fff;
 }
 .type-item-on{
   border-bottom: 2px solid #e64340;
+}
+.center{
+  text-align: center;
+}
+.fixed {
+  position: fixed;
+  background-color: white;
+  width:100%;
+}
+.fixedTop {
+  position: fixed;
+  width: 100%;
+  left:20px;
+  top: 225px;
+  background-color: white;
+}
+.mtop {
+  margin-top:270px;
 }

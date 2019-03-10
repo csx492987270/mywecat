@@ -10,12 +10,16 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     activeCategoryId: 0,
+    tests:[],
     curPage: 1,
+    inputData:"",
+    texts:{},
+    content:[],
     categories:[
-      { id: 0, name:"全部"  },
+      { id: 0, name: "推荐"  },
       { id: 1, name: "唐诗" },
       { id: 2, name: "宋词" },
-      { id: 3, name: "元曲" }
+      { id: 3, name: "诗词搜索" }
       ],
     verse:"",
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -29,12 +33,12 @@ Page({
     duration: 1000
   },
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap () {
     wx.navigateTo({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
+  onLoad () {
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -62,34 +66,79 @@ Page({
       })
     }
   },
-  onShow: function () {
+  onShow() {
     var that = this
     WXAPI.recommendPoetryApi().then(function (res) {
-      console.log(res)
+      that.setData({
+        texts:res.result,
+        content: res.result.content.split("|")
+      })
     })
   },
-  tabClick:function(e){
+  tabClick(e){
+    var that = this
     this.setData({
       activeCategoryId: e.currentTarget.id,
       curPage: 1
     });
     switch (e.currentTarget.id){
       case "1":
-        WXAPI.getTangPoetryApi({"page":1,"count":20}).then(function(res){
-          console.log(res)
+        WXAPI.getTangPoetryApi({"page":2,"count":20}).then(function(res){
+          var arr = res.result;
+          for (var i = 0; i < arr.length;i++){
+              arr[i].content = arr[i].content.split("|");
+          }
+          that.setData({
+            tests:arr
+          });
         })
       break;
       case "2":
+        WXAPI.getSongPoetryApi({ "page": 2, "count": 20 }).then(function (res) {
+          var arr = res.result;
+          for (var i = 0; i < arr.length; i++) {
+            arr[i].content = arr[i].content.split("|");
+          }
+          that.setData({
+            tests: arr
+          });
+        })
+      break;
+      case "3":
+        that.setData({
+          tests: []
+        });
       break;
       case "0":
         WXAPI.recommendPoetryApi().then(function(res){
-        console.log(res)
+          that.setData({
+            texts: res.result,
+            content: res.result.content.split("|")
+          })
        })
       break;
     }
     
   },
-  getUserInfo: function (e) {
+  search(){
+    var val=this.data.inputData
+    var that = this
+    WXAPI.searchPoetryApi(val).then(function (res) {
+      var arr = res.result;
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].content = arr[i].content.split("|");
+      }
+      that.setData({
+        tests: arr
+      });
+    })
+  },
+  bindinput(e){
+    this.setData({
+      inputData: e.detail.value
+    })
+  },
+  getUserInfo(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
